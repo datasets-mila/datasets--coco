@@ -1,5 +1,6 @@
 .nfs*
 /.tmp/
+/bin/ffmpeg-*-amd64-static/
 /logs/
 /extract/
 *.jugdata/
