@@ -3,6 +3,8 @@
 /bin/ffmpeg-*-amd64-static/
 /logs/
 /extract/
+/extract
+bcachefs_content/
 *.jugdata/
 *.out
 *.err
