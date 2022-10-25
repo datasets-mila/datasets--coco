@@ -1,5 +1,9 @@
 #!/bin/bash
 
+pushd `dirname "${BASH_SOURCE[0]}"` >/dev/null
+_SCRIPT_DIR=`pwd -P`
+popd >/dev/null
+
 function exit_on_error_code {
 	local _ERR=$?
 	if [[ ${_ERR} -ne 0 ]]
@@ -298,6 +302,31 @@ function unshare_mount {
 	fi
 
 	unshare -U ${SHELL} -s "$@" <&0
+}
+
+function jug_exec {
+	if [[ -z ${_jug_exec} ]]
+	then
+		local _jug_exec=${_SCRIPT_DIR}/jug_exec.py
+	fi
+	local _jug_argv=()
+	while [[ $# -gt 0 ]]
+	do
+		local _arg="$1"; shift
+		case "${_arg}" in
+			--script | -s) local _jug_exec="$1"; shift ;;
+			-h | --help)
+			>&2 echo "Options for ${FUNCNAME[0]} are:"
+			>&2 echo "[--script | -s JUG_EXEC] path to the jug wrapper script (default: '${_jug_exec}')"
+			${_jug_exec} --help
+			exit
+			;;
+			--) break ;;
+			*) _jug_argv+=("${_arg}") ;;
+		esac
+	done
+	# Remove trailing '/' in argv before sending to jug
+	jug execute "${_jug_argv[@]%/}" ${_jug_exec} -- "${@%/}"
 }
 
 # function unshare_mount {
