@@ -1,4 +1,4 @@
-19 extract/annotations
-40670 extract/test2017
-118287 extract/train2017
-5000 extract/val2017
+19 bcachefs_content/annotations/
+40670 bcachefs_content/test2017/
+118287 bcachefs_content/train2017/
+5000 bcachefs_content/val2017/
